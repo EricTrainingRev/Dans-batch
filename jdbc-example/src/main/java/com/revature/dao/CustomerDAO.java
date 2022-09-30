@@ -96,14 +96,54 @@ public class CustomerDAO {
         }
     }
 
+    // UPDATE
+    public boolean updateCustomer(Customer customer){
+        try(Connection connection = ConnectionUtil.createConnection()){
+            // for simplicity, we will only allow updating first and last name
+            String sql = "update customers set first_name = ?, last_name = ? where user_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(3, customer.userId);
+            ps.setString(2, customer.lastName);
+            ps.setString(1, customer.firstName);
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 1){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // DELETE
+    public boolean deleteCustomer(int customerId){
+        try(Connection connection = ConnectionUtil.createConnection()){
+            String sql = "delete from customers where user_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, customerId);
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 1){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         Customer loginInfo = new Customer();
-        loginInfo.username = "iamTheNight";
-        loginInfo.pass = "Supermanissilly";
+        loginInfo.firstName = "Ghengis";
+        loginInfo.lastName = "Wayne";
+        loginInfo.userId = 9;
 
         CustomerDAO customerDao = new CustomerDAO();
 
-        System.out.println(customerDao.getCustomerByLogin(loginInfo));
+        System.out.println(customerDao.deleteCustomer(6));
 
     }
 }
