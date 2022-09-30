@@ -2,6 +2,7 @@ package com.revature.dao;
 
 import com.revature.entities.Customer;
 import com.revature.util.ConnectionUtil;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
