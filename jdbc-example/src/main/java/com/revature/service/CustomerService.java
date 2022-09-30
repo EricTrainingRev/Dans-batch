@@ -48,6 +48,10 @@ public class CustomerService {
         }
     }
 
+    public Customer createCustomer(Customer customer){
+        return this.customerDao.createCustomer(customer);
+    }
+
     public static void main(String[] args) {
         CustomerDAO customerDAO = new CustomerDAO();
         CustomerService customerService = new CustomerService(customerDAO);
