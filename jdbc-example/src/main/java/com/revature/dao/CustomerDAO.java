@@ -75,26 +75,35 @@ public class CustomerDAO {
             e.printStackTrace();
             return null;
         }
+    }
 
-
+    public Customer getCustomerByLogin(Customer customer){
+        try (Connection connection = ConnectionUtil.createConnection()){
+            String sql = "select * from customers where username = ? and pass = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, customer.username);
+            ps.setString(2, customer.pass);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                customer.userId = rs.getInt("user_id");
+                return customer;
+            } else {
+                return new Customer();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return new Customer();
+        }
     }
 
     public static void main(String[] args) {
-        Customer newCustomer = new Customer(
-                0,
-                "Brad",
-                "Pitt",
-                "pw hunter2",
-                "pittman"
-        );
+        Customer loginInfo = new Customer();
+        loginInfo.username = "iamTheNight";
+        loginInfo.pass = "Supermanissilly";
 
         CustomerDAO customerDao = new CustomerDAO();
 
-//        System.out.println(customerDao.createCustomer(newCustomer));
-
-//        for (Customer c : customerDao.getAllCustomers()){
-//            System.out.println(c);
-//        }
+        System.out.println(customerDao.getCustomerByLogin(loginInfo));
 
     }
 }
